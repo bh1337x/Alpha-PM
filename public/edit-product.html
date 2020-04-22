@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Alpha Pharmacy Manager</title>
+    <link rel="shortcut icon" href="icon.png" type="image/png">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body class="container-fluid">
+    <div class="sidebar bg-light border-right">
+        <div class="sidebar-heading">
+            <div class="bar-img-container">
+                <h5>Alpha Pharmacy Manager</h5>
+                <img class="bar-img" src="icon.png" alt="icon">
+            </div>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+            <a href="inventory.html" class="list-group-item list-group-item-action bg-light">Inventory</a>
+            <a href="products.html" class="list-group-item list-group-item-action bg-light">Products</a>
+            <a href="account.html" class="list-group-item list-group-item-action bg-light">Account</a>
+        </div>
+        <p class="bar-footer">Copyright &copy; APM 2020.</p>
+    </div>
+    <div class="main">
+        <form>
+            <div class="form-group">
+                <label for="id">ID :</label>
+                <input type="text" class="form-control" id="id" placeholder="Product ID" readonly="readonly">
+                <small id="search-box-text" class="form-text text-muted">Product ID is static.</small>
+            </div>
+            <div class="form-group">
+                <label for="fullname">Fullname :</label>
+                <input type="text" class="form-control" id="fullname" placeholder="Product Fullname" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="name">Name :</label>
+                <input type="text" class="form-control" id="name" placeholder="Product Name" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="type">Type :</label>
+                <select class="form-control" id="type" autocomplete="off"></select>
+            </div>
+            <div class="form-group">
+                <label for="generic">Generic :</label>
+                <input type="text" class="form-control" id="generic" placeholder="Product Generic" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="size">Size :</label>
+                <input type="text" class="form-control" id="size" placeholder="Product Size" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="company">Company :</label>
+                <input type="text" class="form-control" id="company" placeholder="Product Company" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="price">Price :</label>
+                <input type="text" class="form-control" id="price" placeholder="Product Price" autocomplete="off">
+            </div>
+            <button type="button" class="btn btn-lg btn-secondary">Back</button>
+            <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#confirmEditModal">Edit Product</button>
+            <button type="button" class="btn btn-lg btn-danger float-right" data-toggle="modal" data-target="#confirmDeleteModal">Delete Product</button>
+            <div class="modal fade" id="confirmEditModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Edit</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b>Edit</b> this product?
+                            <br>
+                            This action cannot be undone!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Edit</button>
+                            <button type="button" class="btn btn-primary">Yes, Confirm Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b>Delete</b> this product?
+                            <br>
+                            This action cannot be undone!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Delete</button>
+                            <button type="button" class="btn btn-primary btn-danger">Yes, Confirm Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/edit-product.js"></script>
+</body>
+</html>

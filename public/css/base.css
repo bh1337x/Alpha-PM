@@ -1,0 +1,40 @@
+.main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 250px;
+}
+
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+
+.bar-img-container {
+    text-align: center;
+    display: block;
+}
+
+.bar-img {
+    width: 70px;
+}
+  
+.sidebar a:hover {
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    transition: ease-in 0.1s;
+}
+
+.bar-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    color: rgb(5, 57, 105);
+    text-align: center;
+}
