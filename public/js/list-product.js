@@ -2,6 +2,7 @@ $(() => {
     const searchBox = $("#search-box");
     const searchBoxText = $("#search-box-text");
     const resultBox = $("#result-box");
+    const resHolder = $("#result-holder");
     const fbBox = $("#fb-box");
     const piText = $("#page-indicator");
     const backBtn = $("#backward-btn");
@@ -13,15 +14,14 @@ $(() => {
 
     modal.on("show.bs.modal", (event) => {
         const link = $(event.relatedTarget);
-        const modal = $(event.currentTarget);
-        modal.find(".modal-body #id").val(link.data("id"));
-        modal.find(".modal-body #fullname").val(link.data("fullname"));
-        modal.find(".modal-body #name").val(link.data("name"));
-        modal.find(".modal-body #type").val(link.data("type"));
-        modal.find(".modal-body #generic").val(link.data("generic"));
-        modal.find(".modal-body #size").val(link.data("size"));
-        modal.find(".modal-body #company").val(link.data("company"));
-        modal.find(".modal-body #price").val(link.data("price"));
+        $("#id").val(link.data("id"));
+        $("#fullname").val(link.data("fullname"));
+        $("#name").val(link.data("name"));
+        $("#type").val(link.data("type"));
+        $("#generic").val(link.data("generic"));
+        $("#size").val(link.data("size"));
+        $("#company").val(link.data("company"));
+        $("#price").val(link.data("price"));
         sessionStorage.setItem("id", link.data("id"));
         sessionStorage.setItem("fullname", link.data("fullname"));
         sessionStorage.setItem("name", link.data("name"));
@@ -31,96 +31,100 @@ $(() => {
         sessionStorage.setItem("company", link.data("company"));
         sessionStorage.setItem("price", link.data("price"));
     });
+
     modal.on("hide.bs.modal", function () {
         sessionStorage.clear();
-        console.log("close");
     });
+
+    const renderProducts = (data, pageNo) =>{
+        if (data.len > 0) {
+            totalPage = Math.round(data.len / 20);
+            if (totalPage * 20 < data.len) {
+                totalPage += 1;
+            }
+            if (currentPage === 1) {
+                backBtn.attr("disabled", "disabled");
+            } else {
+                backBtn.removeAttr("disabled");
+            }
+            if (currentPage === totalPage) {
+                frontBtn.attr("disabled", "disabled");
+            } else {
+                frontBtn.removeAttr("disabled");
+            }
+            piText.text(`Page ${pageNo} of ${totalPage}`);
+            resHolder.html('');
+            for (let i = 0; i < 20; i++){
+                resHolder.append(`<tr>
+                                <th scope="row">${((pageNo - 1) * 20) + i + 1}</th>
+                                <td>
+                                    <a data-toggle="modal" href="#productModal" 
+                                    class="button text-decoration-none"
+                                    data-id="${data.results[i]._id}"
+                                    data-fullname="${data.results[i].fullname}"
+                                    data-name="${data.results[i].name}"
+                                    data-type="${data.results[i].type}"
+                                    data-generic="${data.results[i].generic}"
+                                    data-size="${data.results[i].size}"
+                                    data-company="${data.results[i].company}"
+                                    data-price="${data.results[i].price}">
+                                        ${data.results[i].fullname}
+                                    </a>
+                                </td>
+                                <td>
+                                    <img style="width: 35px" src="img/${iconFor(data.results[i].type)}.png" 
+                                        alt="${data.results[i].type} Icon">
+                                    ${data.results[i].type}
+                                </td>
+                                <td>${data.results[i].company}</td>
+                            </tr>`);
+                if (fbBox.hasClass("d-none")) {
+                    fbBox.removeClass("d-none");
+                }
+                if (resultBox.hasClass("d-none")) {
+                    resultBox.removeClass("d-none");
+                }
+            }
+        } else {
+            if (!fbBox.hasClass("d-none")) {
+                fbBox.addClass("d-none");
+            }
+            if (!resultBox.hasClass("d-none")) {
+                resultBox.addClass("d-none");
+            }
+        }
+    }
+
+    const getAllProducts = (pageNo) => {
+        $.get(`http://localhost:3000/api/list/products/?page=${pageNo}`)
+        .then(data => {
+            renderProducts(data, pageNo);
+        }).catch(err => {
+            console.error(err);
+        });
+    }
 
     const getProducts = (pageNo) => {
         $.get(`http://localhost:3000/api/list/products/name/${searchBox.val()}/?page=${pageNo}`)
-            .then(data => {
-                if (data.len > 0) {
-                    totalPage = Math.round(data.len / 20);
-                    if (totalPage * 20 < data.len) {
-                        totalPage += 1;
-                    }
-                    if (currentPage === 1) {
-                        backBtn.attr("disabled", "disabled");
-                    } else {
-                        backBtn.removeAttr("disabled");
-                    }
-                    if (currentPage === totalPage) {
-                        frontBtn.attr("disabled", "disabled");
-                    } else {
-                        frontBtn.removeAttr("disabled");
-                    }
-                    piText.text(`Page ${pageNo} of ${totalPage}`);
-                    if (fbBox.hasClass("d-none")) {
-                        fbBox.removeClass("d-none");
-                    }
-                    resultBox.html(`<table class="table table-hover">
-                                    <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Company</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="result-holder">
-                                    </tbody>
-                                </table>`);
-                    const resHolder = $("#result-holder");
-                    searchBoxText.text(`Total ${data.len} results`);
-                    for (i = 0; i < data.results.length; i++){
-                        resHolder.append(`<tr>
-                                            <th scope="row">${i + 1}</th>
-                                            <td>
-                                                <a data-toggle="modal" href="#productModal" 
-                                                class="button text-decoration-none"
-                                                data-id="${data.results[i]._id}"
-                                                data-fullname="${data.results[i].fullname}"
-                                                data-name="${data.results[i].name}"
-                                                data-type="${data.results[i].type}"
-                                                data-generic="${data.results[i].generic}"
-                                                data-size="${data.results[i].size}"
-                                                data-company="${data.results[i].company}"
-                                                data-price="${data.results[i].price}">
-                                                    ${data.results[i].fullname}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <img style="width: 35px" src="img/${iconFor(data.results[i].type)}.png" 
-                                                    alt="${data.results[i].type} Icon">
-                                                ${data.results[i].type}
-                                            </td>
-                                            <td>${data.results[i].company}</td>
-                                        </tr>`);
-                    }
-                } else {
-                    if (!fbBox.hasClass("d-none")) {
-                        fbBox.addClass("d-none");
-                    }
-                    resultBox.html("");
-                    searchBoxText.text(`Total ${data.len} results`);
-                }
-            }).catch(err => {
-                console.error(err);
-            });
+        .then(data => {
+            renderProducts(data, pageNo);
+            searchBoxText.text(`Total ${data.len} results`);
+        }).catch(err => {
+            console.error(err);
+        });
     }
 
     searchBox.on("input", () => {
         currentPage = 1;
         totalPage = 0;
+        if (searchBox.val() === "")
+        {
+            getAllProducts(currentPage);
+            searchBoxText.text("Enter A Product Name.");
+        }
         if (searchBox.val() !== "" && searchBox.val().trim() !== "")
         {
             getProducts(currentPage);
-        } else {
-            if (!fbBox.hasClass("d-none")) {
-                fbBox.addClass("d-none");
-            }
-            resultBox.html("");
-            searchBoxText.text("Enter Valid Name!");
         }
     });
     backBtn.on("click", () => {
@@ -129,6 +133,8 @@ $(() => {
             if (searchBox.val() !== "" && searchBox.val().trim() !== "")
             {
                 getProducts(currentPage);
+            } else {
+                getAllProducts(currentPage);
             }
         }
     });
@@ -138,14 +144,20 @@ $(() => {
             if (searchBox.val() !== "" && searchBox.val().trim() !== "")
             {
                 getProducts(currentPage);
+            } else {
+                getAllProducts(currentPage);
             }
         }
     });
     resetBtn.on("click", () => {
-        if (!fbBox.hasClass("d-none")) {
-            fbBox.addClass("d-none");
-        }
-        resultBox.html("");
         searchBoxText.text("Enter A Product Name.");
+        if (fbBox.hasClass("d-none")) {
+            fbBox.removeClass("d-none");
+        }
+        if (resultBox.hasClass("d-none")) {
+            resultBox.removeClass("d-none");
+        }
     });
+
+    getAllProducts(currentPage);
 });

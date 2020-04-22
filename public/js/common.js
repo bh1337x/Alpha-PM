@@ -90,3 +90,22 @@ function iconFor(ptype) {
             return "medicine";
     }
 }
+
+$(() => {
+    const ddLink = $(".dd-link");
+    const ddGroup = $(".dd-group");
+    const ddList = $(".dd-list");
+    ddLink.on("click", (event) => {
+        event.preventDefault();
+    });
+    ddGroup.on("click", (event) => {
+        const target = $(event.currentTarget);
+        const list = target.find(".dd-list");
+        if (!list.hasClass('dd-list-open')) {
+            ddList.removeClass('dd-list-open');
+            list.addClass("dd-list-open");
+        } else {
+            list.removeClass('dd-list-open');
+        }
+    });
+});

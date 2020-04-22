@@ -59,11 +59,6 @@
         <div class="main">
             <form>
                 <div class="form-group">
-                    <label for="id">ID :</label>
-                    <input type="text" class="form-control" id="id" placeholder="Product ID" readonly="readonly">
-                    <small id="search-box-text" class="form-text text-muted">Product ID is static.</small>
-                </div>
-                <div class="form-group">
                     <label for="fullname">Fullname :</label>
                     <input type="text" class="form-control" id="fullname" placeholder="Product Fullname" autocomplete="off">
                 </div>
@@ -91,54 +86,29 @@
                     <label for="price">Price :</label>
                     <input type="text" class="form-control" id="price" placeholder="Product Price" autocomplete="off">
                 </div>
-                <button type="button" class="btn btn-lg btn-secondary"
-                        onclick="sessionStorage.clear();window.history.back();">Back</button>
-                <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#confirmEditModal">Edit Product</button>
-                <button type="button" class="btn btn-lg btn-danger float-right" data-toggle="modal" data-target="#confirmDeleteModal">Delete Product</button>
-                <div class="modal fade" id="confirmEditModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+                <button type="button" class="btn btn-lg btn-secondary" onclick="window.history.back();">Back</button>
+                <button type="button" class="btn btn-lg btn-primary  float-right" data-toggle="modal" data-target="#confirmAddModal">Edit Product</button>
+                <div class="modal fade" id="confirmAddModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Confirm Edit</h5>
+                                <h5 class="modal-title">Confirm Add</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to <b>Edit</b> this product?
-                                <br>
-                                This action cannot be undone!
+                                Are you sure you want to <b>Add</b> this product?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Edit</button>
-                                <button type="button" class="btn btn-primary">Yes, Confirm Edit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Confirm Delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to <b>Delete</b> this product?
-                                <br>
-                                This action cannot be undone!
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Delete</button>
-                                <button type="button" class="btn btn-primary btn-danger">Yes, Confirm Delete</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Add</button>
+                                <button type="button" class="btn btn-primary">Yes, Confirm Add</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <script src="js/edit-product.js"></script>
+        <script src="js/add-product.js"></script>
     </body>
 </html>

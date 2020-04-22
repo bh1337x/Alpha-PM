@@ -12,11 +12,17 @@ const router = express.Router();
 router.get("/products", (req, res) => {
     const page = parseInt(req.query.page);
     const query = {};
-    query.skip = 10 * (page - 1);
-    query.limit = 10;
-    Product.find({}, {}, query)
+    query.skip = 20 * (page - 1);
+    query.limit = 20;
+    Product.find({})
     .then(data => {
-        res.status(200).json(data);
+        const len = data.length;
+        Product.find({}, {}, query)
+            .then(data => {
+                res.status(200).json({ len, results: data });
+            }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
     }).catch(err => {
         res.status(400).send(`Error : [ ${err} ]`);
     });
@@ -61,8 +67,7 @@ router.post("/products/id/:productId", (req, res) => {
         size: req.body.size,
         company: req.body.company,
         price: req.body.price
-    })
-    .then(data => {
+    }).then(data => {
         res.status(200).json(data);
     }).catch(err => {
         res.status(400).send(`Error : [ ${err} ]`);
@@ -81,13 +86,13 @@ router.delete("/products/id/:productId", (req, res) => {
 
 // Get all Products by productName
 router.get("/products/name/:productName", (req, res) => {
-    var page = parseInt(req.query.page);
-    var query = {};
+    const page = parseInt(req.query.page);
+    const query = {};
     query.skip = 20 * (page - 1);
     query.limit = 20;
     Product.find({ name: { $regex: new RegExp(`\\b${req.params.productName}`) }})
     .then(data => {
-        var len = data.length;
+        const len = data.length;
         Product.find({ name: { $regex: new RegExp(`\\b${req.params.productName}`) }}, {}, query)
         .then(data => {
             res.status(200).json({ len, results: data });
@@ -105,7 +110,7 @@ router.get("/types", (req, res) => {
     .then(data => {
         res.status(200).json(data);
     }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);s
+        res.status(400).send(`Error : [ ${err} ]`);
     });
 });
 
@@ -128,7 +133,7 @@ router.get("/types/id/:typeId", (req, res) => {
     .then(data => {
         res.status(200).json(data);
     }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);s
+        res.status(400).send(`Error : [ ${err} ]`);
     });
 });
 
@@ -140,7 +145,7 @@ router.post("/types/id/:typeId", (req, res) => {
     .then(data => {
         res.status(200).json(data);
     }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);s
+        res.status(400).send(`Error : [ ${err} ]`);
     });
 });
 
@@ -150,7 +155,7 @@ router.delete("/types/id/:typeId", (req, res) => {
     .then(data => {
         res.status(200).json(data);
     }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);s
+        res.status(400).send(`Error : [ ${err} ]`);
     });
 });
 

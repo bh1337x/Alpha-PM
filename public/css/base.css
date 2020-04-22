@@ -22,12 +22,28 @@
 .bar-img {
     width: 70px;
 }
-  
-.sidebar a:hover {
+
+.dd-link {
+    font-size: 20px;
+    text-decoration: none;
+    color: #08051a;
+}
+
+.dd-group:hover .dd-link{
+    color: #08051a;
     font-weight: bold;
     text-decoration: none;
     display: block;
-    transition: ease-in 0.1s;
+}
+
+.dd-list {
+    transition: max-height 0.1s;
+    overflow: hidden;
+    max-height: 0;
+}
+
+.dd-list-open {
+    max-height: 300px;
 }
 
 .bar-footer {

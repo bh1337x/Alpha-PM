@@ -1,7 +1,7 @@
-$(document).ready(() => {
+$(() => {
     if (sessionStorage.getItem("id") == null)
     {
-        location.href = "products.html"
+        location.href = "list-products.html"
     }
     const idField = $("#id");
     const fullnameField = $("#fullname");

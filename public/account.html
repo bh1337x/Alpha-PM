@@ -7,6 +7,10 @@
     <link rel="shortcut icon" href="icon.png" type="image/png">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/base.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/common.js"></script>
 </head>
 <body class="container-fluid">
     <div class="sidebar bg-light border-right">
@@ -17,18 +21,43 @@
             </div>
         </div>
         <div class="list-group list-group-flush">
-            <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
-            <a href="inventory.html" class="list-group-item list-group-item-action bg-light">Inventory</a>
-            <a href="products.html" class="list-group-item list-group-item-action bg-light">Products</a>
-            <a href="account.html" class="list-group-item list-group-item-action bg-light">Account</a>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Home</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Account</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="account.html" class="list-group-item list-group-item-action bg-light">Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Inventory</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="inventory.html" class="list-group-item list-group-item-action bg-light">Inventory</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">List</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="list-products.html" class="list-group-item list-group-item-action bg-light">Products</a>
+                    </div>
+                </div>
+            </div>
         </div>
         <p class="bar-footer">Copyright &copy; APM 2020.</p>
     </div>
     <div class="main">
         <h1>Hello Account!</h1>
     </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
