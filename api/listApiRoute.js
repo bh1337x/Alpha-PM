@@ -4,9 +4,40 @@ const express = require("express");
 // Import necessary Schema Models
 const Product = require("../models/ProductModel");
 const Type = require("../models/TypeModel");
+const Company = require("../models/CompanyModel");
 
 // Create new Express Router
 const router = express.Router();
+
+// Mock Product API
+router.get("/mock/product", (req, res) => {
+    Product.find({}, { fullname: 1 })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Mock Type API
+router.get("/mock/type", (req, res) => {
+    Product.find({}, { type: 1 })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Mock Company API
+router.get("/mock/company", (req, res) => {
+    Product.find({}, { company: 1 })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
 
 // Get all Products
 router.get("/products", (req, res) => {
@@ -90,10 +121,10 @@ router.get("/products/name/:productName", (req, res) => {
     const query = {};
     query.skip = 20 * (page - 1);
     query.limit = 20;
-    Product.find({ name: { $regex: new RegExp(`\\b${req.params.productName}`) }})
+    Product.find({ fullname: { $regex: new RegExp(`\\b${req.params.productName}`) }})
     .then(data => {
         const len = data.length;
-        Product.find({ name: { $regex: new RegExp(`\\b${req.params.productName}`) }}, {}, query)
+        Product.find({ fullname: { $regex: new RegExp(`\\b${req.params.productName}`) }}, {}, query)
         .then(data => {
             res.status(200).json({ len, results: data });
         }).catch(err => {
@@ -165,6 +196,71 @@ router.get("/types/name/:typeName", (req, res) => {
     .then(data => {
         res.status(200).json(data);
     }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Get all Companies
+router.get("/companies", (req, res) => {
+    Company.find({})
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Add a new Company
+router.post("/companies", (req, res) => {
+    const company = new Company({
+        name: req.body.name
+    })
+    company.save()
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Get a Company by _id
+router.get("/companies/id/:companyId", (req, res) => {
+    Company.findById(req.params.companyId)
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Edit a Company by _id
+router.post("/companies/id/:companyId", (req, res) => {
+    Company.findByIdAndUpdate(req.params.companyId, {
+        name: req.body.name
+    })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Delete a Company by _id
+router.delete("/companies/id/:companyId", (req, res) => {
+    Company.findByIdAndDelete(req.params.companyId)
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Get all Companies by companyName
+router.get("/companies/name/:companyName", (req, res) => {
+    Company.find({ name: { $regex: new RegExp(`\\b${req.params.companyName}`) }})
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
         res.status(400).send(`Error : [ ${err} ]`);
     });
 });

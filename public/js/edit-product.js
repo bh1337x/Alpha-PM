@@ -11,20 +11,33 @@ $(() => {
     const sizeField = $("#size");
     const companyField = $("#company");
     const priceField = $("#price");
-    $.get(`http://localhost:3000/api/list/types/`)
+    idField.val(sessionStorage.getItem("id"));
+    $.get("http://localhost:3000/api/list/types")
     .then((data) => {
         for (let i = 0; i < data.length; i++) {
             typeField.append(`<option value="${data[i].name}">${data[i].name}</option>'`);
         }
-        typeField.val(sessionStorage.getItem("type"));
     }).catch((err) => {
         console.error(err);
     });
-    idField.val(sessionStorage.getItem("id"));
-    fullnameField.val(sessionStorage.getItem("fullname"));
-    nameField.val(sessionStorage.getItem("name"));
-    genericField.val(sessionStorage.getItem("generic"));
-    sizeField.val(sessionStorage.getItem("size"));
-    companyField.val(sessionStorage.getItem("company"));
-    priceField.val(sessionStorage.getItem("price"));
+    $.get("http://localhost:3000/api/list/companies")
+        .then((data) => {
+            for (let i = 0; i < data.length; i++) {
+                companyField.append(`<option value="${data[i].name}">${data[i].name}</option>'`);
+            }
+        }).catch((err) => {
+        console.error(err);
+    });
+    $.get(`http://localhost:3000/api/list/products/id/${sessionStorage.getItem("id")}`)
+        .then((data) => {
+            fullnameField.val(data.fullname);
+            nameField.val(data.name);
+            typeField.val(data.type);
+            genericField.val(data.generic);
+            sizeField.val(data.size);
+            companyField.val(data.company);
+            priceField.val(data.price);
+        }).catch((err) => {
+        console.error(err);
+    });
 });

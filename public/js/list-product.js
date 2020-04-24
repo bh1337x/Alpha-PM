@@ -23,13 +23,6 @@ $(() => {
         $("#company").val(link.data("company"));
         $("#price").val(link.data("price"));
         sessionStorage.setItem("id", link.data("id"));
-        sessionStorage.setItem("fullname", link.data("fullname"));
-        sessionStorage.setItem("name", link.data("name"));
-        sessionStorage.setItem("type", link.data("type"));
-        sessionStorage.setItem("generic", link.data("generic"));
-        sessionStorage.setItem("size", link.data("size"));
-        sessionStorage.setItem("company", link.data("company"));
-        sessionStorage.setItem("price", link.data("price"));
     });
 
     modal.on("hide.bs.modal", function () {
@@ -107,8 +100,8 @@ $(() => {
     const getProducts = (pageNo) => {
         $.get(`http://localhost:3000/api/list/products/name/${searchBox.val()}/?page=${pageNo}`)
         .then(data => {
-            renderProducts(data, pageNo);
             searchBoxText.text(`Total ${data.len} results`);
+            renderProducts(data, pageNo);
         }).catch(err => {
             console.error(err);
         });
