@@ -9,6 +9,11 @@ const Company = require("../models/CompanyModel");
 // Create new Express Router
 const router = express.Router();
 
+// Mock API
+router.get("/mock", (req, res) => {
+    res.send("200 OK")
+});
+
 // Mock Product API
 router.get("/mock/product", (req, res) => {
     Product.find({}, { fullname: 1 })
@@ -61,21 +66,25 @@ router.get("/products", (req, res) => {
 
 // Add a new Products
 router.post("/products", (req, res) => {
-    const product = new Product({
-        fullname: `${req.body.name} ${req.body.size} ${req.body.type}`,
-        name: req.body.name,
-        type: req.body.type,
-        generic: req.body.generic,
-        size: req.body.size,
-        company: req.body.company,
-        price: req.body.price
-    });
-    product.save()
-    .then(data => {
-        res.status(200).send(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+    if (req.body.fullname && req.body.name && req.body.price) {
+        const product = new Product({
+            fullname: req.body.fullname,
+            name: req.body.name,
+            type: req.body.type || "NULL",
+            generic: req.body.generic || "NULL",
+            size: req.body.size || "NULL",
+            company: req.body.company || "NULL",
+            price: req.body.price
+        });
+        product.save()
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+    } else {
+        res.status(400).send("Error : [ Invalid Body ]");
+    }
 });
 
 // Get a Products by _id
@@ -90,19 +99,23 @@ router.get("/products/id/:productId", (req, res) => {
 
 // Edit a Products by _id
 router.post("/products/id/:productId", (req, res) => {
-    Product.findByIdAndUpdate(req.params.productId, {
-        fullname: req.body.fullname,
-        name: req.body.name,
-        type: req.body.type,
-        generic: req.body.generic,
-        size: req.body.size,
-        company: req.body.company,
-        price: req.body.price
-    }).then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+    if (req.body.fullname && req.body.name && req.body.price) {
+        Product.findByIdAndUpdate(req.params.productId, {
+            fullname: req.body.fullname,
+            name: req.body.name,
+            type: req.body.type || "NULL",
+            generic: req.body.generic || "NULL",
+            size: req.body.size || "NULL",
+            company: req.body.company || "NULL",
+            price: req.body.price
+        }).then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+    } else {
+        res.status(400).send("Error : [ Invalid Body ]");
+    }
 });
 
 // Delete a Products by _id
@@ -172,8 +185,7 @@ router.get("/types/id/:typeId", (req, res) => {
 router.post("/types/id/:typeId", (req, res) => {
     Type.findByIdAndUpdate(req.params.typeId, {
         name: req.body.name
-    })
-    .then(data => {
+    }).then(data => {
         res.status(200).json(data);
     }).catch(err => {
         res.status(400).send(`Error : [ ${err} ]`);

@@ -22,7 +22,15 @@ $(() => {
         $("#size").val(link.data("size"));
         $("#company").val(link.data("company"));
         $("#price").val(link.data("price"));
-        sessionStorage.setItem("id", link.data("id"));
+        sessionStorage.setItem("edit-product-id", link.data("id"));
+        sessionStorage.setItem("edit-product-fullname", link.data("fullname"));
+        sessionStorage.setItem("edit-product-name", link.data("name"));
+        sessionStorage.setItem("edit-product-type", link.data("type"));
+        sessionStorage.setItem("edit-product-generic", link.data("generic"));
+        sessionStorage.setItem("edit-product-size", link.data("size"));
+        sessionStorage.setItem("edit-product-company", link.data("company"));
+        sessionStorage.setItem("edit-product-price", link.data("price"));
+
     });
 
     modal.on("hide.bs.modal", function () {
@@ -47,7 +55,7 @@ $(() => {
             }
             piText.text(`Page ${pageNo} of ${totalPage}`);
             resHolder.html('');
-            for (let i = 0; i < 20; i++){
+            for (let i = 0; i < 20; i++) {
                 resHolder.append(`<tr>
                                 <th scope="row">${((pageNo - 1) * 20) + i + 1}</th>
                                 <td>

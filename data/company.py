@@ -1,8 +1,8 @@
 import json
 
 ifile = open("company.json", "r")
-ofile = open("company.csv", "w+");
-ofile.write("name,count\n");
+ofile = open("company.csv", "w+")
+ofile.write("name\n")
 jo = json.loads(ifile.readline())
 d = dict()
 for en in jo:
@@ -15,9 +15,11 @@ for en in jo:
 i = 0
 
 for k in d:
-    ofile.write("{0},{1}\n".format(k, d[k]));
+    ofile.write("{0}\n".format(k))
     i += d[k]
 
+
+ofile.write("END")
 print("processed : ", i)
 
 ifile.close()
