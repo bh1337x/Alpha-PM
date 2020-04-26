@@ -20,8 +20,8 @@ router.get("/mock/product", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Mock Type API
@@ -30,8 +30,8 @@ router.get("/mock/type", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Mock Company API
@@ -40,8 +40,8 @@ router.get("/mock/company", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get all Products
@@ -51,17 +51,17 @@ router.get("/products", (req, res) => {
     query.skip = 20 * (page - 1);
     query.limit = 20;
     Product.find({})
-    .then(data => {
-        const len = data.length;
-        Product.find({}, {}, query)
-            .then(data => {
-                res.status(200).json({ len, results: data });
-            }).catch(err => {
+        .then(data => {
+            const len = data.length;
+            Product.find({}, {}, query)
+                .then(data => {
+                    res.status(200).json({ len, results: data });
+                }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
+        }).catch(err => {
             res.status(400).send(`Error : [ ${err} ]`);
         });
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
 });
 
 // Add a new Products
@@ -77,11 +77,11 @@ router.post("/products", (req, res) => {
             price: req.body.price
         });
         product.save()
-        .then(data => {
-            res.status(200).send(data);
-        }).catch(err => {
-            res.status(400).send(`Error : [ ${err} ]`);
-        });
+            .then(data => {
+                res.status(200).send(data);
+            }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
     } else {
         res.status(400).send("Error : [ Invalid Body ]");
     }
@@ -90,11 +90,11 @@ router.post("/products", (req, res) => {
 // Get a Products by _id
 router.get("/products/id/:productId", (req, res) => {
     Product.findById(req.params.productId)
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Edit a Products by _id
@@ -121,11 +121,11 @@ router.post("/products/id/:productId", (req, res) => {
 // Delete a Products by _id
 router.delete("/products/id/:productId", (req, res) => {
     Product.findByIdAndDelete(req.params.productId)
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get all Products by productName
@@ -135,27 +135,27 @@ router.get("/products/name/:productName", (req, res) => {
     query.skip = 20 * (page - 1);
     query.limit = 20;
     Product.find({ fullname: { $regex: new RegExp(`\\b${req.params.productName}`) }})
-    .then(data => {
-        const len = data.length;
-        Product.find({ fullname: { $regex: new RegExp(`\\b${req.params.productName}`) }}, {}, query)
         .then(data => {
-            res.status(200).json({ len, results: data });
+            const len = data.length;
+            Product.find({ fullname: { $regex: new RegExp(`\\b${req.params.productName}`) }}, {}, query)
+                .then(data => {
+                    res.status(200).json({ len, results: data });
+                }).catch(err => {
+                    res.status(400).send(`Error : [ ${err} ]`);
+                });
         }).catch(err => {
             res.status(400).send(`Error : [ ${err} ]`);
         });
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
 });
 
 // Get all Types
 router.get("/types", (req, res) => {
     Type.find({})
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Add a new Type
@@ -164,21 +164,31 @@ router.post("/types", (req, res) => {
         name: req.body.name
     })
     type.save()
-    .then(data => {
-        res.status(200).send(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get a Type by _id
 router.get("/types/id/:typeId", (req, res) => {
     Type.findById(req.params.typeId)
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            Product.countDocuments({ type: data.name })
+                .then((c) => {
+                    const d = {
+                        _id: data._id,
+                        name: data.name,
+                        count: c
+                    }
+                    res.status(200).json(d);
+                }).catch(err => {
+                    res.status(400).send(`Error : [ ${err} ]`);
+                });
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Edit a Type by _id
@@ -195,21 +205,21 @@ router.post("/types/id/:typeId", (req, res) => {
 // Delete a Type by _id
 router.delete("/types/id/:typeId", (req, res) => {
     Type.findByIdAndDelete(req.params.typeId)
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get all Types by typeName
 router.get("/types/name/:typeName", (req, res) => {
     Type.find({ name: { $regex: new RegExp(`\\b${req.params.typeName}`) }})
-    .then(data => {
-        res.status(200).json(data);
-    }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get all Companies
@@ -218,8 +228,8 @@ router.get("/companies", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Add a new Company
@@ -231,8 +241,8 @@ router.post("/companies", (req, res) => {
         .then(data => {
             res.status(200).send(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get a Company by _id
@@ -241,8 +251,8 @@ router.get("/companies/id/:companyId", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Edit a Company by _id
@@ -253,8 +263,8 @@ router.post("/companies/id/:companyId", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Delete a Company by _id
@@ -263,8 +273,8 @@ router.delete("/companies/id/:companyId", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Get all Companies by companyName
@@ -273,8 +283,8 @@ router.get("/companies/name/:companyName", (req, res) => {
         .then(data => {
             res.status(200).json(data);
         }).catch(err => {
-        res.status(400).send(`Error : [ ${err} ]`);
-    });
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Export router as default

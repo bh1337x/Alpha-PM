@@ -55,21 +55,22 @@ $(() => {
             }
             piText.text(`Page ${pageNo} of ${totalPage}`);
             resHolder.html('');
-            for (let i = 0; i < 20; i++) {
+            let i = 0;
+            data.results.forEach((d) => {
                 resHolder.append(`<tr>
                                 <th scope="row">${((pageNo - 1) * 20) + i + 1}</th>
                                 <td>
                                     <a data-toggle="modal" href="#productModal" 
                                     class="button text-decoration-none"
-                                    data-id="${data.results[i]._id}"
-                                    data-fullname="${data.results[i].fullname}"
-                                    data-name="${data.results[i].name}"
-                                    data-type="${data.results[i].type}"
-                                    data-generic="${data.results[i].generic}"
-                                    data-size="${data.results[i].size}"
-                                    data-company="${data.results[i].company}"
-                                    data-price="${data.results[i].price}">
-                                        ${data.results[i].fullname}
+                                    data-id="${d._id}"
+                                    data-fullname="${d.fullname}"
+                                    data-name="${d.name}"
+                                    data-type="${d.type}"
+                                    data-generic="${d.generic}"
+                                    data-size="${d.size}"
+                                    data-company="${d.company}"
+                                    data-price="${d.price}">
+                                        ${d.fullname}
                                     </a>
                                 </td>
                                 <td>
@@ -85,7 +86,8 @@ $(() => {
                 if (resultBox.hasClass("d-none")) {
                     resultBox.removeClass("d-none");
                 }
-            }
+                i = i + 1;
+            });
         } else {
             if (!fbBox.hasClass("d-none")) {
                 fbBox.addClass("d-none");
@@ -97,22 +99,22 @@ $(() => {
     }
 
     const getAllProducts = (pageNo) => {
-        $.get(`http://localhost:3000/api/list/products/?page=${pageNo}`)
-        .then(data => {
-            renderProducts(data, pageNo);
-        }).catch(err => {
-            console.error(err);
-        });
+        $.get(`http://localhost:3000/api/list/products?page=${pageNo}`)
+            .then(data => {
+                renderProducts(data, pageNo);
+            }).catch(err => {
+                console.error(err);
+            });
     }
 
     const getProducts = (pageNo) => {
-        $.get(`http://localhost:3000/api/list/products/name/${searchBox.val()}/?page=${pageNo}`)
-        .then(data => {
-            searchBoxText.text(`Total ${data.len} results`);
-            renderProducts(data, pageNo);
-        }).catch(err => {
-            console.error(err);
-        });
+        $.get(`http://localhost:3000/api/list/products/name/${searchBox.val()}?page=${pageNo}`)
+            .then(data => {
+                searchBoxText.text(`Total ${data.len} results`);
+                renderProducts(data, pageNo);
+            }).catch(err => {
+                console.error(err);
+            });
     }
 
     searchBox.on("input", () => {
@@ -158,6 +160,9 @@ $(() => {
         if (resultBox.hasClass("d-none")) {
             resultBox.removeClass("d-none");
         }
+        currentPage = 1;
+        totalPage = 0;
+        getAllProducts(currentPage);
     });
 
     getAllProducts(currentPage);

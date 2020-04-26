@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home - Alpha Pharmacy Manager</title>
+        <link rel="shortcut icon" href="icon.png" type="image/png">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/base.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/common.js"></script>
+    </head>
+    <body class="container-fluid">
+        <div class="sidebar bg-light border-right">
+        <div class="sidebar-heading">
+            <div class="bar-img-container">
+                <h5>Alpha Pharmacy Manager</h5>
+                <img class="bar-img" src="icon.png" alt="icon">
+            </div>
+        </div>
+        <div class="list-group list-group-flush">
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Home</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="index.html" class="list-group-item list-group-item-action bg-light">Home</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Account</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="account.html" class="list-group-item list-group-item-action bg-light">Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">Inventory</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="inventory.html" class="list-group-item list-group-item-action bg-light">Inventory</a>
+                    </div>
+                </div>
+            </div>
+            <div class="dd-group list-group-item list-group-item-action bg-light">
+                <a href="#" class="dd-link">List</a>
+                <div class="dd-list list-group list-group-flush">
+                    <div class="list-group list-group-flush">
+                        <a href="list-product.html" class="list-group-item list-group-item-action bg-light">Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="bar-footer">Copyright &copy; APM 2020.</p>
+    </div>
+        <div class="main">
+            <form>
+                <div class="form-group">
+                    <label style="font-size: 25px;" for="search-box">Search By Type Name</label>
+                    <div class="row">
+                        <div class="col-lg-10 col-md-8 col-sm-8"><input type="text" class="form-control" id="search-box"
+                                                                        aria-describedby="search-box-text" placeholder="Type Name"
+                                                                        autocomplete="off">
+                            <small id="search-box-text" class="form-text text-muted"></small>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4">
+                            <button id="reset-btn" class="btn btn-block btn-primary" type="reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <div id="result-box" class="d-none">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="result-holder">
+                    </tbody>
+                </table>
+            </div>
+            <a href="add-product.html" style="position: fixed;bottom: 30px;right: 30px;border-radius: 30px;"
+               class="btn btn-lg btn-primary" type="button">+</a>
+        </div>
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Product Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="id" class="col-form-label-sm">ID :</label>
+                                <input type="text" class="form-control form-control-sm" id="id" placeholder="Type ID" readonly="readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-form-label-sm">Name :</label>
+                                <input type="text" class="form-control form-control-sm" id="name" placeholder="Type Name" readonly="readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="count" class="col-form-label-sm">Count :</label>
+                                <input type="text" class="form-control form-control-sm" id="count" placeholder="Type Count" readonly="readonly">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="edit-product.html">
+                            <button type="button" class="btn btn-primary">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/common.js"></script>
+        <script src="js/list-type.js"></script>
+    </body>
+</html>

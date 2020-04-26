@@ -1,7 +1,7 @@
 $(() => {
     if (sessionStorage.getItem("edit-product-id") == null)
     {
-        location.href = "list-products.html"
+        location.href = "list-product.html"
     }
 
     const idField = $("#id");
@@ -27,24 +27,24 @@ $(() => {
     priceField.val(sessionStorage.getItem("edit-product-price"));
 
     $.get("http://localhost:3000/api/list/types")
-    .then((data) => {
-        data.forEach((d) => {
-            typeField.append(`<option value="${d.name}">${d.name}</option>'`);
+        .then((data) => {
+            data.forEach((d) => {
+                typeField.append(`<option value="${d.name}">${d.name}</option>'`);
+            });
+            typeField.val(sessionStorage.getItem("edit-product-type"));
+        }).catch((err) => {
+            console.error(err);
         });
-        typeField.val(sessionStorage.getItem("edit-product-type"));
-    }).catch((err) => {
-        console.error(err);
-    });
 
     $.get("http://localhost:3000/api/list/companies")
-    .then((data) => {
-        data.forEach((d) => {
-            companyField.append(`<option value="${d.name}">${d.name}</option>'`);
+        .then((data) => {
+            data.forEach((d) => {
+                companyField.append(`<option value="${d.name}">${d.name}</option>'`);
+            });
+            companyField.val(sessionStorage.getItem("edit-product-company"));
+        }).catch((err) => {
+            console.error(err);
         });
-        companyField.val(sessionStorage.getItem("edit-product-company"));
-    }).catch((err) => {
-        console.error(err);
-    });
 
     editBtn.on("click", () => {
         editModal.modal('hide');
@@ -72,16 +72,16 @@ $(() => {
     deleteBtn.on("click", () => {
         deleteModal.modal('hide');
         $.ajax(`http://localhost:3000/api/list/products/id/${idField.val()}`, { type: "DELETE" })
-        .then(() => {
-            toastMsg.html("<p class=\"text-success\">Deleted Product Successfully!</p>");
-            toast.toast('show');
-            setInterval(() => {
-                window.history.back();
-            }, 2000);
-        }).catch((err) => {
-            toastMsg.html("<p class=\"text-danger\">Error Deleting Product!</p>")
-            toast.toast('show');
-            console.error(err);
-        });
+            .then(() => {
+                toastMsg.html("<p class=\"text-success\">Deleted Product Successfully!</p>");
+                toast.toast('show');
+                setInterval(() => {
+                    window.history.back();
+                }, 2000);
+            }).catch((err) => {
+                toastMsg.html("<p class=\"text-danger\">Error Deleting Product!</p>")
+                toast.toast('show');
+                console.error(err);
+            });
     });
 });
