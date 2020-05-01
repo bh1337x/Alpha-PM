@@ -249,7 +249,17 @@ router.post("/companies", (req, res) => {
 router.get("/companies/id/:companyId", (req, res) => {
     Company.findById(req.params.companyId)
         .then(data => {
-            res.status(200).json(data);
+            Product.countDocuments({ company: data.name })
+                .then((c) => {
+                    const d = {
+                        _id: data._id,
+                        name: data.name,
+                        count: c
+                    }
+                    res.status(200).json(d);
+                }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
         }).catch(err => {
             res.status(400).send(`Error : [ ${err} ]`);
         });

@@ -4,7 +4,7 @@ $(() => {
     const resultBox = $("#result-box");
     const resHolder = $("#result-holder");
     const resetBtn = $("#reset-btn");
-    const modal = $("#productModal");
+    const modal = $("#typeModal");
 
     modal.on("show.bs.modal", (event) => {
         const link = $(event.relatedTarget);
@@ -32,9 +32,10 @@ $(() => {
                 resHolder.append(`<tr>
                                     <th scope="row">${i + 1}</th>
                                     <td>
-                                        <a data-toggle="modal" href="#productModal" 
+                                        <a data-toggle="modal" href="#typeModal" 
                                         class="button text-decoration-none"
-                                        data-id="${d._id}">
+                                        data-id="${d._id}"
+                                        data-name="${d.name}">
                                             <img style="width: 35px" src="img/${iconFor(d.name)}.png" 
                                             alt="${d.name} Icon"> ${d.name}
                                         </a>
@@ -76,7 +77,7 @@ $(() => {
         if (searchBox.val() === "")
         {
             getAllTypes();
-            searchBoxText.text("Enter A Product Name.");
+            searchBoxText.text("Enter A Type Name.");
         }
         if (searchBox.val() !== "" && searchBox.val().trim() !== "")
         {

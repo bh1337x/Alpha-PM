@@ -1,10 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List / Company - Alpha Pharmacy Manager</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div style="padding: 20px;">
+            <form>
+                <div class="form-group">
+                    <label style="font-size: 25px;" for="search-box">Search By Company Name</label>
+                    <div class="row">
+                        <div class="col-lg-10 col-md-8 col-sm-8"><input type="text" class="form-control" id="search-box"
+                                                                        aria-describedby="search-box-text" placeholder="Company Name"
+                                                                        autocomplete="off">
+                            <small id="search-box-text" class="form-text text-muted"></small>
+                        </div>
+                        <div class="col-lg-2 col-md-4 col-sm-4">
+                            <button id="reset-btn" class="btn btn-block btn-primary" type="reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <div id="result-box" class="d-none">
+                <table class="table table-hover" style="margin-bottom: 0;">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="result-holder">
+                    </tbody>
+                </table>
+            </div>
+            <a href="add-product.html" style="position: fixed; bottom: 30px;right: 30px;border-radius: 30px;"
+               class="btn btn-lg btn-primary" type="button">+</a>
+        </div>
+        <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Company Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="id" class="col-form-label-sm">ID :</label>
+                                <input type="text" class="form-control form-control-sm" id="id" placeholder="Company ID" readonly="readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-form-label-sm">Name :</label>
+                                <input type="text" class="form-control form-control-sm" id="name" placeholder="Company Name" readonly="readonly">
+                            </div>
+                            <div class="form-group">
+                                <label for="count" class="col-form-label-sm">Count :</label>
+                                <input type="text" class="form-control form-control-sm" id="count" placeholder="Product Count" readonly="readonly">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="edit-product.html">
+                            <button type="button" class="btn btn-primary">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/common.js"></script>
+        <script src="js/list-company.js"></script>
+    </body>
 </html>
