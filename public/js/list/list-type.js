@@ -6,25 +6,31 @@ $(() => {
     const resetBtn = $("#reset-btn");
     const modal = $("#typeModal");
 
-    modal.on("show.bs.modal", (event) => {
+    modal.on("show.bs.modal", event => {
         const link = $(event.relatedTarget);
-        $("#id").val(link.data("id"));
-        sessionStorage.setItem("edit-type-id", link.data("id"));
-        $.get(`http://localhost:3000/api/list/types/id/${link.data("id")}`)
-            .then((d) => {
-                $("#name").val(d.name);
-                sessionStorage.setItem("edit-type-name", link.data("name"));
-                $("#count").val(d.count);
-            }).catch((err) => {
+        const data = {
+            id: link.data("id"),
+            name: link.data("name"),
+            count: 0
+        }
+
+        $.get(`http://${location.host}/api/list/types/id/${link.data("id")}`)
+            .then(d => {
+                data.count = d.count;
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#count").val(data.count);
+                sessionStorage.setItem("edit-type-data", JSON.stringify(data));
+            }).catch(err => {
                 console.error(err);
         });
     });
 
-    modal.on("hide.bs.modal", function () {
-        sessionStorage.clear();
+    modal.on("hide.bs.modal", () => {
+        sessionStorage.removeItem("edit-type-data");
     });
 
-    const renderTypes = (data) =>{
+    const renderTypes = data => {
         if (data.length > 0) {
             resHolder.html('');
             let i = 0;
@@ -36,7 +42,7 @@ $(() => {
                                         class="button text-decoration-none"
                                         data-id="${d._id}"
                                         data-name="${d.name}">
-                                            <img style="width: 35px" src="img/${iconFor(d.name)}.png" 
+                                            <img style="width: 35px" src="../img/${iconFor(d.name)}.png" 
                                             alt="${d.name} Icon"> ${d.name}
                                         </a>
                                     </td>
@@ -54,7 +60,7 @@ $(() => {
     }
 
     const getAllTypes = () => {
-        $.get(`http://localhost:3000/api/list/types`)
+        $.get(`http://${location.host}/api/list/types`)
             .then(data => {
                 searchBoxText.text(`Total ${data.length} types`);
                 renderTypes(data);
@@ -64,7 +70,7 @@ $(() => {
     }
 
     const getTypes = () => {
-        $.get(`http://localhost:3000/api/list/types/name/${searchBox.val()}`)
+        $.get(`http://${location.host}/api/list/types/name/${searchBox.val()}`)
             .then(data => {
                 searchBoxText.text(`Total ${data.length} results`);
                 renderTypes(data);
@@ -77,7 +83,6 @@ $(() => {
         if (searchBox.val() === "")
         {
             getAllTypes();
-            searchBoxText.text("Enter A Type Name.");
         }
         if (searchBox.val() !== "" && searchBox.val().trim() !== "")
         {
@@ -93,4 +98,4 @@ $(() => {
     });
 
     getAllTypes();
-})
+});

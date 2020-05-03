@@ -3,15 +3,15 @@ class Entry:
   def __init__(self, pname, ptype, pgeneric, psize, pcompany, pprice):
     if (psize == ""):
         self._fullname = pname
-        psize = "NULL"
+        psize = "NONE"
     else:
         self._fullname = pname + " " + psize
     
     if (ptype == ""):
-        ptype = "NULL"
+        ptype = "NONE"
        
     if (pprice == ""):
-        pprice = "NULL"
+        pprice = "NONE"
         
     self._name = pname
     self._type = ptype
@@ -37,7 +37,7 @@ class Entry:
 
 ef = open('entrys.csv', 'r')
 ef.readline()
-of = open('product_.csv', 'w')
+of = open('product.csv', 'w')
 of.write('fullname,name,type,generic,size,company,price\n')
 i = 0
 try:
@@ -47,9 +47,9 @@ try:
         tokens = line.split(',')
         e = Entry(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5])
         i = i + 1
-        # print(i, " : ", e.toJSON())
         of.write(e.toCSV())
         of.write('\n')
+    
     ef.close()
     of.close()
 except EOFError:

@@ -4,10 +4,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>List / Product - Alpha Pharmacy Manager</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <script src="js/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
     </head>
     <body>
         <div style="padding: 20px;">
@@ -18,7 +18,7 @@
                         <div class="col-lg-10 col-md-8 col-sm-8"><input type="text" class="form-control" id="search-box"
                             aria-describedby="search-box-text" placeholder="Product Name"
                             autocomplete="off">
-                           <small id="search-box-text" class="form-text text-muted">Enter A Product Name</small>
+                           <small id="search-box-text" class="form-text text-muted"></small>
                         </div>
                         <div class="col-lg-2 col-md-4 col-sm-4">
                             <button id="reset-btn" class="btn btn-block btn-primary" type="reset">Reset</button>
@@ -48,6 +48,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Type</th>
+                        <th scope="col">Generic</th>
                         <th scope="col">Company</th>
                     </tr>
                     </thead>
@@ -112,7 +113,7 @@
                 </div>
             </div>
         </div>
-        <script src="js/common.js"></script>
-        <script src="js/list-product.js"></script>
+        <script src="../js/common.js"></script>
+        <script src="../js/list/list-product.js"></script>
     </body>
 </html>

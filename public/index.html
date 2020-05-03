@@ -10,7 +10,6 @@
         <script src="js/jquery.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/app-shell.js"></script>
     </head>
     <body>
         <div class="sidebar bg-light border-right">
@@ -51,9 +50,10 @@
                     <a href="#" class="dd-link">List</a>
                     <div class="dd-list list-group list-group-flush">
                         <div class="list-group list-group-flush">
-                            <a href="#" data-target="list-product.html" class="nav-item list-group-item list-group-item-action bg-light">Product</a>
-                            <a href="#" data-target="list-company.html" class="nav-item list-group-item list-group-item-action bg-light">Company</a>
-                            <a href="#" data-target="list-type.html" class="nav-item list-group-item list-group-item-action bg-light">Type</a>
+                            <a href="#" data-target="list/list-product.html" class="nav-item list-group-item list-group-item-action bg-light">Product</a>
+                            <a href="#" data-target="list/list-company.html" class="nav-item list-group-item list-group-item-action bg-light">Company</a>
+                            <a href="#" data-target="list/list-generic.html" class="nav-item list-group-item list-group-item-action bg-light">Generic</a>
+                            <a href="#" data-target="list/list-type.html" class="nav-item list-group-item list-group-item-action bg-light">Type</a>
                         </div>
                     </div>
                 </div>
@@ -63,5 +63,6 @@
         <div class="main">
             <iframe id="app-frame" src="home.html"></iframe>
         </div>
+        <script src="./js/app-shell.js"></script>
     </body>
 </html>

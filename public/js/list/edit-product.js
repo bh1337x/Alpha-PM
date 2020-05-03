@@ -1,5 +1,5 @@
 $(() => {
-    if (sessionStorage.getItem("edit-product-id") == null)
+    if (sessionStorage.getItem("edit-product-data") == null)
     {
         location.href = "list-product.html"
     }
@@ -19,36 +19,38 @@ $(() => {
     const toast = $("#toast");
     const toastMsg = $(".toast-body");
 
-    idField.val(sessionStorage.getItem("edit-product-id"));
-    fullnameField.val(sessionStorage.getItem("edit-product-fullname"));
-    nameField.val(sessionStorage.getItem("edit-product-name"));
-    genericField.val(sessionStorage.getItem("edit-product-generic"));
-    sizeField.val(sessionStorage.getItem("edit-product-size"));
-    priceField.val(sessionStorage.getItem("edit-product-price"));
+    const editData = JSON.parse(sessionStorage.getItem("edit-product-data"));
 
-    $.get("http://localhost:3000/api/list/types")
+    idField.val(editData.id);
+    fullnameField.val(editData.fullname);
+    nameField.val(editData.name);
+    genericField.val(editData.generic);
+    sizeField.val(editData.size);
+    priceField.val(editData.price);
+
+    $.get(`http://${location.host}/api/list/types`)
         .then((data) => {
             data.forEach((d) => {
-                typeField.append(`<option value="${d.name}">${d.name}</option>'`);
+                typeField.append(`<option value="${d.name}">${d.name}</option>`);
             });
-            typeField.val(sessionStorage.getItem("edit-product-type"));
+            typeField.val(editData.type);
         }).catch((err) => {
             console.error(err);
         });
 
-    $.get("http://localhost:3000/api/list/companies")
+    $.get(`http://${location.host}/api/list/companies`)
         .then((data) => {
             data.forEach((d) => {
-                companyField.append(`<option value="${d.name}">${d.name}</option>'`);
+                companyField.append(`<option value="${d.name}">${d.name}</option>`);
             });
-            companyField.val(sessionStorage.getItem("edit-product-company"));
+            companyField.val(editData.company);
         }).catch((err) => {
             console.error(err);
         });
 
     editBtn.on("click", () => {
         editModal.modal('hide');
-        $.post(`http://localhost:3000/api/list/products/id/${idField.val()}`, {
+        $.post(`http://${location.host}/api/list/products/id/${idField.val()}`, {
             fullname: fullnameField.val(),
             name: nameField.val(),
             type:typeField.val(),
@@ -59,6 +61,7 @@ $(() => {
         }).then(() => {
             toastMsg.html("<p class=\"text-success\">Edited Product Successfully!</p>");
             toast.toast('show');
+            sessionStorage.removeItem("edit-product-data");
             setInterval(() => {
                 window.history.back();
             }, 2000);
@@ -71,10 +74,11 @@ $(() => {
 
     deleteBtn.on("click", () => {
         deleteModal.modal('hide');
-        $.ajax(`http://localhost:3000/api/list/products/id/${idField.val()}`, { type: "DELETE" })
+        $.ajax(`http://${location.host}/api/list/products/id/${idField.val()}`, { type: "DELETE" })
             .then(() => {
                 toastMsg.html("<p class=\"text-success\">Deleted Product Successfully!</p>");
                 toast.toast('show');
+                sessionStorage.removeItem("edit-product-data");
                 setInterval(() => {
                     window.history.back();
                 }, 2000);

@@ -11,19 +11,19 @@ const ProductSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default: "NULL"
+        default: "NONE"
     },
     generic: {
         type: String,
-        default: ""
+        default: "NONE"
     },
     size: {
         type: String,
-        default: "NULL"
+        default: "NONE"
     },
     company: {
         type: String,
-        default: "NULL"
+        default: "NONE"
     },
     price: {
         type: Number,

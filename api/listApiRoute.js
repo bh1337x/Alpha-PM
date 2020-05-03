@@ -3,19 +3,25 @@ const express = require("express");
 
 // Import necessary Schema Models
 const Product = require("../models/ProductModel");
-const Type = require("../models/TypeModel");
 const Company = require("../models/CompanyModel");
+const Generic = require("../models/GenericModel");
+const Type = require("../models/TypeModel");
 
 // Create new Express Router
 const router = express.Router();
 
 // Mock API
 router.get("/mock", (req, res) => {
-    res.send("200 OK")
+    Product.find({type: "NONE"}, { _id: 1 })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
 });
 
 // Mock Product API
-router.get("/mock/product", (req, res) => {
+router.get("/mock/fullname", (req, res) => {
     Product.find({}, { fullname: 1 })
         .then(data => {
             res.status(200).json(data);
@@ -44,6 +50,16 @@ router.get("/mock/company", (req, res) => {
         });
 });
 
+// Mock Generic API
+router.get("/mock/generic", (req, res) => {
+    Product.find({}, { generic: 1 })
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
 // Get all Products
 router.get("/products", (req, res) => {
     const page = parseInt(req.query.page);
@@ -70,10 +86,10 @@ router.post("/products", (req, res) => {
         const product = new Product({
             fullname: req.body.fullname,
             name: req.body.name,
-            type: req.body.type || "NULL",
-            generic: req.body.generic || "NULL",
-            size: req.body.size || "NULL",
-            company: req.body.company || "NULL",
+            type: req.body.type || "NONE",
+            generic: req.body.generic || "NONE",
+            size: req.body.size || "NONE",
+            company: req.body.company || "NONE",
             price: req.body.price
         });
         product.save()
@@ -103,10 +119,10 @@ router.post("/products/id/:productId", (req, res) => {
         Product.findByIdAndUpdate(req.params.productId, {
             fullname: req.body.fullname,
             name: req.body.name,
-            type: req.body.type || "NULL",
-            generic: req.body.generic || "NULL",
-            size: req.body.size || "NULL",
-            company: req.body.company || "NULL",
+            type: req.body.type || "NONE",
+            generic: req.body.generic || "NONE",
+            size: req.body.size || "NONE",
+            company: req.body.company || "NONE",
             price: req.body.price
         }).then(data => {
             res.status(200).json(data);
@@ -162,7 +178,7 @@ router.get("/types", (req, res) => {
 router.post("/types", (req, res) => {
     const type = new Type({
         name: req.body.name
-    })
+    });
     type.save()
         .then(data => {
             res.status(200).send(data);
@@ -194,9 +210,20 @@ router.get("/types/id/:typeId", (req, res) => {
 // Edit a Type by _id
 router.post("/types/id/:typeId", (req, res) => {
     Type.findByIdAndUpdate(req.params.typeId, {
-        name: req.body.name
+        name: req.body.name.trim()
     }).then(data => {
-        res.status(200).json(data);
+        Product.find({type: data.name }, { _id: 1 })
+            .then(ids => {
+                ids.forEach(id => {
+                    Product.findByIdAndUpdate(id, { type: req.body.name.trim() })
+                        .catch((err) => {
+                            res.status(400).send(`Error : [ ${err} ]`);
+                        });
+                });
+                res.status(200).json(data);
+            }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
     }).catch(err => {
         res.status(400).send(`Error : [ ${err} ]`);
     });
@@ -250,7 +277,7 @@ router.get("/companies/id/:companyId", (req, res) => {
     Company.findById(req.params.companyId)
         .then(data => {
             Product.countDocuments({ company: data.name })
-                .then((c) => {
+                .then(c => {
                     const d = {
                         _id: data._id,
                         name: data.name,
@@ -268,13 +295,23 @@ router.get("/companies/id/:companyId", (req, res) => {
 // Edit a Company by _id
 router.post("/companies/id/:companyId", (req, res) => {
     Company.findByIdAndUpdate(req.params.companyId, {
-        name: req.body.name
-    })
-        .then(data => {
-            res.status(200).json(data);
-        }).catch(err => {
-            res.status(400).send(`Error : [ ${err} ]`);
-        });
+        name: req.body.name.trim()
+    }).then(data => {
+        Product.find({ company: data.name }, { _id: 1 })
+            .then(ids => {
+                ids.forEach(id => {
+                    Product.findByIdAndUpdate(id, { company: req.body.name.trim() })
+                        .catch((err) => {
+                            res.status(400).send(`Error : [ ${err} ]`);
+                        });
+                });
+                res.status(200).json(data);
+            }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
+    }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
 });
 
 // Delete a Company by _id
@@ -292,6 +329,112 @@ router.get("/companies/name/:companyName", (req, res) => {
     Company.find({ name: { $regex: new RegExp(`\\b${req.params.companyName}`) }})
         .then(data => {
             res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+});
+
+// Get all Generics
+router.get("/generics", (req, res) => {
+    const page = parseInt(req.query.page);
+    const query = {};
+    query.skip = 20 * (page - 1);
+    query.limit = 20;
+    Generic.find({})
+        .then(data => {
+            const len = data.length;
+            Generic.find({}, {}, query)
+                .then(data => {
+                    res.status(200).json({ len, results: data });
+                }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
+        }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Add a new Generic
+router.post("/generics", (req, res) => {
+    const generic = new Generic({
+        name: req.body.name
+    })
+    generic.save()
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+});
+
+// Get a Generic by _id
+router.get("/generics/id/:genericId", (req, res) => {
+    Generic.findById(req.params.genericId)
+        .then(data => {
+            Product.countDocuments({ generic: data.name })
+                .then(c => {
+                    const d = {
+                        _id: data._id,
+                        name: data.name,
+                        count: c
+                    }
+                    res.status(200).json(d);
+                }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+});
+
+// Edit a Generic by _id
+router.post("/generics/id/:genericId", (req, res) => {
+    Generic.findByIdAndUpdate(req.params.genericId, {
+        name: req.body.name.trim()
+    }).then(data => {
+        Product.find({ generic: data.name }, { _id: 1 })
+            .then(ids => {
+                ids.forEach(id => {
+                    Product.findByIdAndUpdate(id, { generic: req.body.name.trim() })
+                        .catch((err) => {
+                            res.status(400).send(`Error : [ ${err} ]`);
+                        });
+                });
+                res.status(200).json(data);
+            }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+    }).catch(err => {
+        res.status(400).send(`Error : [ ${err} ]`);
+    });
+});
+
+// Delete a Generic by _id
+router.delete("/generics/id/:genericId", (req, res) => {
+    Generic.findByIdAndDelete(req.params.genericsId)
+        .then(data => {
+            res.status(200).json(data);
+        }).catch(err => {
+            res.status(400).send(`Error : [ ${err} ]`);
+        });
+});
+
+// Get all Generics by genericName
+router.get("/generics/name/:genericName", (req, res) => {
+    const page = parseInt(req.query.page);
+    const query = {};
+    query.skip = 20 * (page - 1);
+    query.limit = 20;
+    Generic.find({ name: { $regex: new RegExp(`\\b${req.params.genericName}`) }})
+        .then(data => {
+            const len = data.length;
+            Generic.find({ name: { $regex: new RegExp(`\\b${req.params.genericName}`) }},
+                {}, query)
+                .then(data => {
+                    res.status(200).json({ len, results: data });
+                }).catch(err => {
+                res.status(400).send(`Error : [ ${err} ]`);
+            });
         }).catch(err => {
             res.status(400).send(`Error : [ ${err} ]`);
         });

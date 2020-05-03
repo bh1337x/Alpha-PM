@@ -6,15 +6,15 @@ class Entry:
   def __init__(self, pname, ptype, pgeneric, psize, pcompany, pprice):
     if (psize == ""):
         self._fullname = pname
-        psize = "NULL"
+        psize = "NONE"
     else:
         self._fullname = pname + " " + psize
     
     if (ptype == ""):
-        ptype = "NULL"
+        ptype = "NONE"
        
     if (pprice == ""):
-        pprice = "NULL"
+        pprice = "NONE"
     self._name = pname
     self._type = ptype
     self._generic = pgeneric

@@ -11,28 +11,28 @@ $(() => {
     const toastSuccess = $("#toastSuccess");
     const toastError = $("#toastError");
 
-    $.get("http://localhost:3000/api/list/types")
+    $.get(`http://${location.host}/api/list/types`)
     .then((data) => {
         data.forEach((d) => {
             typeField.append(`<option value="${d.name}">${d.name}</option>'`);
         });
-        typeField.val("NULL");
+        typeField.val("NONE");
     }).catch((err) => {
         console.error(err);
     });
-    $.get("http://localhost:3000/api/list/companies")
+    $.get(`http://${location.host}/api/list/companies`)
     .then((data) => {
         data.forEach((d) => {
             companyField.append(`<option value="${d.name}">${d.name}</option>'`);
         });
-        companyField.val("NULL");
+        companyField.val("NONE");
     }).catch((err) => {
         console.error(err);
     });
 
     confirmBtn.on("click", () => {
         confirmModal.modal('hide');
-        $.post("http://localhost:3000/api/list/products", {
+        $.post(`http://${location.host}/api/list/products`, {
             fullname: fullnameField.val(),
             name: nameField.val(),
             type:typeField.val(),
@@ -43,6 +43,8 @@ $(() => {
         }).then(() => {
             toastSuccess.toast('show');
             $("#addForm").trigger("reset");
+            typeField.val("NONE");
+            companyField.val("NONE");
         }).catch((err) => {
             toastError.toast('show');
             console.error(err);

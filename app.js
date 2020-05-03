@@ -2,7 +2,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require('morgan');
-const compression = require('compression');
+const cors = require("cors");
+const compression = require("compression");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 
@@ -28,7 +29,8 @@ mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${proc
 });
 
 // Setup Express middleware
-app.use(morgan("tiny"));
+app.use(morgan(":remote-addr - :remote-user [:date[clf]] \":method :url HTTP/:http-version\" :status :res[content-length]"));
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

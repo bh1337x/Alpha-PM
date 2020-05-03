@@ -25,7 +25,7 @@ $(() => {
         const link = target.data("target");
         frame.attr("src", link);
     });
-
+    
     frame.on('load',function() {
         document.title = frame.contents().find("title").text();
     });

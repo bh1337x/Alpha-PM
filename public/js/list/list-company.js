@@ -6,29 +6,35 @@ $(() => {
     const resetBtn = $("#reset-btn");
     const modal = $("#companyModal");
 
-    modal.on("show.bs.modal", (event) => {
+    modal.on("show.bs.modal", event => {
         const link = $(event.relatedTarget);
-        $("#id").val(link.data("id"));
-        sessionStorage.setItem("edit-company-id", link.data("id"));
-        $.get(`http://localhost:3000/api/list/companies/id/${link.data("id")}`)
-            .then((d) => {
-                $("#name").val(d.name);
-                sessionStorage.setItem("edit-company-name", link.data("name"));
-                $("#count").val(d.count);
-            }).catch((err) => {
-            console.error(err);
-        });
+        const data = {
+            id: link.data("id"),
+            name: link.data("name"),
+            count: 0
+        }
+
+        $.get(`http://${location.host}/api/list/companies/id/${link.data("id")}`)
+            .then(d => {
+                data.count = d.count;
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#count").val(data.count);
+                sessionStorage.setItem("edit-company-data", JSON.stringify(data));
+            }).catch(err => {
+                console.error(err);
+            });
     });
 
-    modal.on("hide.bs.modal", function () {
-        sessionStorage.clear();
+    modal.on("hide.bs.modal", () => {
+        sessionStorage.removeItem("edit-company-data");
     });
 
-    const renderCompanies = (data) =>{
+    const renderCompanies = data => {
         if (data.length > 0) {
             resHolder.html('');
             let i = 0;
-            data.forEach((d) => {
+            data.forEach(d => {
                 resHolder.append(`<tr>
                                     <th scope="row">${i + 1}</th>
                                     <td>
@@ -53,30 +59,29 @@ $(() => {
     }
 
     const getAllComapnies = () => {
-        $.get(`http://localhost:3000/api/list/companies`)
+        $.get(`http://${location.host}/api/list/companies`)
             .then(data => {
                 searchBoxText.text(`Total ${data.length} companies`);
                 renderCompanies(data);
             }).catch(err => {
-            console.error(err);
-        });
+                console.error(err);
+            });
     }
 
     const getCompanies = () => {
-        $.get(`http://localhost:3000/api/list/companies/name/${searchBox.val()}`)
+        $.get(`http://${location.host}/api/list/companies/name/${searchBox.val()}`)
             .then(data => {
                 searchBoxText.text(`Total ${data.length} results`);
                 renderCompanies(data);
             }).catch(err => {
-            console.error(err);
-        });
+                console.error(err);
+            });
     }
 
     searchBox.on("input", () => {
         if (searchBox.val() === "")
         {
             getAllComapnies();
-            searchBoxText.text("Enter A Company Name.");
         }
         if (searchBox.val() !== "" && searchBox.val().trim() !== "")
         {
@@ -92,4 +97,4 @@ $(() => {
     });
 
     getAllComapnies();
-})
+});

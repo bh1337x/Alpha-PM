@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List / Add Product - Alpha Pharmacy Manager</title>
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div style="padding: 20px;">
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="fullname">Fullname :</label>
+                    <input type="text" class="form-control" id="fullname" placeholder="Product Fullname" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name :</label>
+                    <input type="text" class="form-control" id="name" placeholder="Product Name" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="type">Type :</label>
+                    <select class="form-control" id="type" autocomplete="off"></select>
+                </div>
+                <div class="form-group">
+                    <label for="generic">Generic :</label>
+                    <input type="text" class="form-control" id="generic" placeholder="Product Generic" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="size">Size :</label>
+                    <input type="text" class="form-control" id="size" placeholder="Product Size" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company :</label>
+                    <select class="form-control" id="company" autocomplete="off"></select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price :</label>
+                    <input type="text" class="form-control" id="price" placeholder="Product Price" autocomplete="off">
+                </div>
+                <button type="button" class="btn btn-lg btn-secondary" onclick="window.history.back();">Back</button>
+                <button type="button" class="btn btn-lg btn-primary  float-right" data-toggle="modal"
+                        data-target="#confirmModal">Add Product</button>
+            </form>
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="productModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Add</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b>Add</b> this Product?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Don't Add</button>
+                            <button id="confirmBtn" type="button" class="btn btn-primary">Yes, Confirm Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="toastSuccess" role="alert" aria-live="assertive" aria-atomic="true" class="toast"
+                 data-autohide="true" data-delay="5000" style="position: fixed;top: 20px;right: 20px;">
+                <div class="toast-header">
+                    <strong class="mr-auto">Alpha PM</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    <p class="text-success">Added new Product to List.</p>
+                </div>
+            </div>
+            <div id="toastError" role="alert" aria-live="assertive" aria-atomic="true" class="toast"
+                 data-autohide="true" data-delay="5000" style="position: fixed;top: 20px;right: 20px;">
+                <div class="toast-header">
+                    <strong class="mr-auto">Alpha PM</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    <p class="text-danger">Error adding Product to List.</p>
+                </div>
+            </div>
+        </div>
+        <script src="../js/list/add-product.js"></script>
+    </body>
+</html>
